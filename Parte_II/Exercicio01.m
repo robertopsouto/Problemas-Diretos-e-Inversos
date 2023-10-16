@@ -2,32 +2,34 @@
 % Prof. Giuliano Marotta - SIS/IG/UnB - marotta@unb.br
 % Parte II: Exercicio 01
 % ---------------------------------------------------------------------
-% Problema linear
+% Problema linear: t=var.S
 
 clear; clc;
-figure; % Cria figura
-hold on % habilita plotar na mesma figura
+
 
 S = [150;155;160;153];
 d = [5.0; 5.1; 5.3; 5.0]; % Vetor dos valores observados
-m0= [0]; % Vetor dos parametros aproximados
-N = length(d(:,1)); % Numeto de observacoes
-M = length(m0(:,1)); % Numero de parametros
-it =10; % Numero de iteracoes
-
-for i=1:it
-    G = [S]; % Matriz das derivadas parciais
-    d0 = S.*m0; % Vetor dos valores calculados
-    dc = d-d0; % Vetor das diferencas
-    dm = (G'*G)^-1*(G'*dc); % Vetor das correcoes
-    m = m0+dm; % Vetor dos parametros ajustados
-    e = d-S*m; % Vetor das diferencas
-    m0=m; % Vetor dos parametros ajustados
-   plot(i,1./m,'or') % plota valor do parametro por iteracao
-end
-
-xlabel('Interacao')
-ylabel('Velocidade')
+% Matriz dos coeficientes
+% Numero de parametros
+M = 1; %vagarosidade - var'
+% Numero de Observacoes
+N = length(d(:,1));
+% Matriz dos coeficientes
+G = [S];
+% Matriz Peso
+W = eye(N,N);
+% Vetor dos parametros
+m = (G'*W*G)^-1*(G'*W*d)
+% Velocidade
+v = 1/m
+% Vetor dos erros
+e = d-G*m
+% Variancia a posteriori
+Var_pos = (e'*W*e)/(N-M)
+% Matrix covariancia dos parametros
+Cov_m = Var_pos*(G'*W*G)^-1
+% Vetor dos desvios Padrao dos Parametros
+Dp_m = diag(Cov_m).^0.5
 
 
 

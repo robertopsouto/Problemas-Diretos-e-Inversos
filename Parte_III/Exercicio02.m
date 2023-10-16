@@ -41,7 +41,8 @@ G = h.*[1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0;...
         0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0;...
         0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0;...
         0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1]; % Matriz dos coeficientes
-lrg(1:length(G),1) = 0.001; % Vetor dos parametros de regularizacao
+lamb = 0.001; % Vetor dos parametros de regularizacao
 I = eye(length(G),length(G)); % Matriz identidade
-m = (G'*G+lrg.*I)^-1*(G'*d) % Parametros estimados
+m = (G'*G+lamb.*I)^-1*(G'*d) % Parametros estimados
 e = d-G*m % Erro
+v = 1./m

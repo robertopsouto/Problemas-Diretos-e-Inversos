@@ -19,7 +19,7 @@ for i=1:it
     m = m0+dm % Vetor dos parametros ajustados
     e = d-2.*m.^3; % Vetor dos residuos
     m0=m;% vetor dos parâmetros ajustados
-    plot(i,m,'.r') % plota valor do parametro por iteracao
+    plot(i,dm,'.r') % plota valor do parametro por iteracao
 end
 
 xlabel('iteracao')

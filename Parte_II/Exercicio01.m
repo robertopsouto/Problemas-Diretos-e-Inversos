@@ -1,48 +1,51 @@
 % Problemas Diretos e Inversos em Geofísica - Conceitos Básicos e Aplicações
 % Prof. Giuliano Marotta - SIS/IG/UnB - marotta@unb.br
-% Parte I: Exercicio 01
+% Parte II: Exercicio 01
 % ---------------------------------------------------------------------
-clear
-clc
-% Modelo: T = a*1+b*z
-% Abrir arquivo de dados
-Dados = load('DadosEx01.txt');
-% Vetor dos dados de profundidade
-z = Dados(:,1);
-% Vetor dos dados observados de Temperarura
-d = Dados(:,2);
-% Vetor das incertezas dos dados observados
-Var_d = Dados(:,3).^2;
-% Numero de parametros
-M = 2; %'a' e 'b'
-% Numero de Observacoes
-N = length(d(:,1));
-% Matriz dos coeficientes
-G = [ones(N,1) z];
-% Matriz Peso
-W = (Var_d.*eye(N,N))^-1;
-% Vetor dos parametros
-m = (G'*W*G)^-1*(G'*W*d)
-% Vetor dos erros
-e = d-G*m
-% Variancia a posteriori
-Var_pos = (e'*W*e)/(N-M)
-% Matrix covariancia dos parametros
-Cov_m = Var_pos*(G'*W*G)^-1
-% Vetor dos desvios Padrao dos Parametros
-Dp_m = diag(Cov_m).^0.5
+% Problema linear
 
-% Plotar dados observados
-figure
-plot(d,z,'.b')
-xlabel('Temperatura')
-ylabel('Profundidade')
-% Plotar dados calculados
-hold on
-plot(G*m,z,'.r')
+clear; clc;
+figure; % Cria figura
+hold on % habilita plotar na mesma figura
 
-% plotar erro
-figure
-plot(e,'.r')
-ylabel('erros')
+S = [150;155;160;153];
+d = [5.0; 5.1; 5.3; 5.0]; % Vetor dos valores observados
+m0= [0]; % Vetor dos parametros aproximados
+N = length(d(:,1)); % Numeto de observacoes
+M = length(m0(:,1)); % Numero de parametros
+it =10; % Numero de iteracoes
+
+for i=1:it
+    G = [S]; % Matriz das derivadas parciais
+    d0 = S.*m0; % Vetor dos valores calculados
+    dc = d-d0; % Vetor das diferencas
+    dm = (G'*G)^-1*(G'*dc); % Vetor das correcoes
+    m = m0+dm; % Vetor dos parametros ajustados
+    e = d-S*m; % Vetor das diferencas
+    m0=m; % Vetor dos parametros ajustados
+   plot(i,1./m,'or') % plota valor do parametro por iteracao
+end
+
+xlabel('Interacao')
+ylabel('Velocidade')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
